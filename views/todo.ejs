@@ -1,16 +1,20 @@
 <html>
   <head>
     <title>Todo List</title>
-    <script
-      src="https://code.jquery.com/jquery-1.12.4.min.js"
-      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-      crossorigin="anonymous">
-    </script>
+    <!-- Provided styles -->
     <link
       href="/assets/styles.css"
       rel="stylesheet"
       type="text/css"
     />
+    <!-- JQuery -->
+    <script
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+      crossorigin="anonymous">
+    </script>
+    <!-- Provided todo list functionality -->
+    <script src="/assets/todo-list.js"></script>
   </head>
   <body>
     <h1>My Todo List</h1>
@@ -27,9 +31,9 @@
         </button>
       </form>
       <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
+        <% for (let i = 0; i < todos.length; i++) { %>
+          <li><%= todos[i].item %></li>
+        <% } %>
       </ul>
     </div>
   </body>

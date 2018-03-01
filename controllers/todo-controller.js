@@ -1,3 +1,20 @@
+// Third-party
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+
+// Connect to mLab database
+const db_host = process.env.DB_HOST
+const db_user = process.env.DB_USER
+const db_pass = process.env.DB_PASS
+mongoose.connect(`mongodb://${db_user}:${db_pass}@${db_host}`)
+
+// Create data schema
+const todoSchema = new mongoose.Schema({
+  item: String,
+})
+
+const Todo = mongoose.model('Todo', todoSchema)
+
 // Placeholder data
 let data = [
   {item: 'practice Node.js'},
@@ -8,7 +25,14 @@ let data = [
   {item: 'apply to job'}
 ]
 
-const bodyParser = require('body-parser')
+let todos = data.map((datum) => Todo(datum))
+todos.forEach((todo) => {
+  todo.save((err) => {
+    if (err) throw err
+    console.log(`item "${todo.item}" saved`)
+  })
+})
+
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = (app) => {

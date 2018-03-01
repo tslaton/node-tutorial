@@ -2,7 +2,7 @@
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
-// Connect to mLab database
+// Connect to mongodb
 const db_host = process.env.DB_HOST
 const db_user = process.env.DB_USER
 const db_pass = process.env.DB_PASS
@@ -15,39 +15,34 @@ const todoSchema = new mongoose.Schema({
 
 const Todo = mongoose.model('Todo', todoSchema)
 
-// Placeholder data
-let data = [
-  {item: 'practice Node.js'},
-  {item: 'enable Babel and ES6 in Node'},
-  {item: 'learn Postgres'},
-  {item: 'learn Hapi'},
-  {item: 'build app with React and Flask or Hapi'},
-  {item: 'apply to job'}
-]
-
-let todos = data.map((datum) => Todo(datum))
-todos.forEach((todo) => {
-  todo.save((err) => {
-    if (err) throw err
-    console.log(`item "${todo.item}" saved`)
-  })
-})
-
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 module.exports = (app) => {
 
   app.get('/todo', (req, res) => {
-    res.render('todo', { todos: data })
+    // Get data from mongodb
+    Todo.find({}, (err, data) => {
+      if (err) throw err
+      // Render view with data
+      res.render('todo', { todos: data })
+    })
   })
 
   app.post('/todo', urlencodedParser, (req, res) => {
-    data.push(req.body)
-    res.json(data)
+    // Get data from view and save to mongodb
+    const todo = Todo(req.body).save((err, data) => {
+      if (err) throw err
+      // Pass updated data back to view
+      res.json(data)
+    })
   })
 
   app.delete('/todo/:item', (req, res) => {
-    data = data.filter((todo) => todo.item.replace(/ /g, '-') !== req.params.item)
-    res.json(data)
+    // Delete requested item from mongodb
+    Todo.find({ item: req.params.item.replace(/\-/g, ' ') }).remove((err, data) => {
+      if (err) throw err
+      // Pass updated data back to view
+      res.json(data)
+    })
   })
 }

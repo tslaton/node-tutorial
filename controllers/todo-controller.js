@@ -3,8 +3,8 @@ let data = [
   {item: 'practice Node.js'},
   {item: 'enable Babel and ES6 in Node'},
   {item: 'learn Postgres'},
-  {item: 'learn Hapi?'},
-  {item: 'build app with React and Flask or Node/Hapi'},
+  {item: 'learn Hapi'},
+  {item: 'build app with React and Flask or Hapi'},
   {item: 'apply to job'}
 ]
 

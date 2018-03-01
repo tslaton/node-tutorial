@@ -2,7 +2,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 // Modules
-const todoController = require('./controllers/todoController')
+const todoController = require('./controllers/todo-controller')
 
 const app = express()
 // Template engine
